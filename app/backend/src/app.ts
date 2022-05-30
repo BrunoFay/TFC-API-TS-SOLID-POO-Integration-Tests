@@ -1,12 +1,12 @@
 import * as express from 'express';
-import * as cors from 'cors'
+import * as cors from 'cors';
 
 class App {
   public app: express.Express;
   // ...
 
   constructor() {
-    this.app = express()
+    this.app = express();
     this.config();
     // ...
   }
@@ -20,11 +20,10 @@ class App {
     };
 
     this.app.use(accessControl);
-    this.app.use(cors())
-    this.app.use(express.json())
+    this.app.use(cors());
+    this.app.use(express.json());
     // ..
   }
-
 
   public start(PORT: string | number): void {
     this.app.listen(PORT, () => console.log(`Escutando porta ${PORT}`));
