@@ -19,7 +19,7 @@ class App {
     };
 
     this.app.use(accessControl);
-    // ...
+    // ..
   }
 
   // ...
