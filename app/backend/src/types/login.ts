@@ -4,6 +4,8 @@ import { User } from './user';
 export type LoginService = {
   singIn: (email: string, password: string) => Promise<LoginRequestResponse>;
   validateToken:(token: string) => string | JwtPayload;
+  getUserByEmail: (email: string) => Promise<User>;
+  getRole: (email: string) => Promise<string>;
 };
 
 export type LoginInfos = {

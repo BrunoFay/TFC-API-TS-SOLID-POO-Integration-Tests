@@ -27,9 +27,11 @@ class LoginController {
       if (!isValidToken) {
         res.status(400).json('Invalid token');
       }
-      console.log(isValidToken);
+      const { email } = isValidToken as { email: string };
+      console.log(email);
+      const userRole = await this.service.getRole(email);
 
-      res.status(200).json(isValidToken);
+      res.status(200).json(userRole);
     } catch (error) {
       next(error);
     }

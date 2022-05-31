@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import { JwtPayload } from 'jsonwebtoken';
+import { User } from '../types/user';
 import { LoginInfos, LoginModel } from '../types/login';
 import { createToken, validadeToken } from './token';
 
@@ -11,9 +12,13 @@ class LoginService {
     this.loginModel = loginModel;
   }
 
+  async getUserByEmail(email: string) {
+    return await this.loginModel.findOne({ where: { email }, raw: true }) as User;
+  }
+
   async singIn(email: string, password: string) {
     const loginInfos: LoginInfos = { email };
-    const userResult = await this.loginModel.findOne({ where: { email }, raw: true });
+    const userResult = await this.getUserByEmail(email);
 
     if (!userResult) return { errorStatus: 401, message: 'Incorrect email or password' };
     const validatePassword = await bcrypt.compare(password, userResult?.password);
@@ -29,6 +34,11 @@ class LoginService {
   validateToken(token: string) {
     this.isTokenValid = validadeToken(token);
     return this.isTokenValid;
+  }
+
+  async getRole(email: string) {
+    const user = await this.getUserByEmail(email);
+    return user.role;
   }
 }
 export default LoginService;
