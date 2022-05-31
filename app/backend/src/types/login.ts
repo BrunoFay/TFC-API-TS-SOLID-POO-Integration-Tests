@@ -1,7 +1,9 @@
+import { JwtPayload } from "jsonwebtoken";
 import { User } from "./user";
 
 export type LoginService = {
   singIn: (email: string, password: string) => Promise<LoginRequestResponse>;
+  validateToken:( token: string) => string|JwtPayload;
 }
 
 export type LoginInfos = {
