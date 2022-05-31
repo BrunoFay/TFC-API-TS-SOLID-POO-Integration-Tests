@@ -18,7 +18,6 @@ export type LoginModel = {
     where: { email: string },
     raw: boolean
   }) => Promise<User | undefined>
-
 };
 
 export type LoginRequestResponse = {

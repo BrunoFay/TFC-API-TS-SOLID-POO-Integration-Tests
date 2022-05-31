@@ -6,7 +6,6 @@ import LoginValidations from '../middlewares/Loginvalidate';
 import { LoginModel } from '../types/login';
 
 const LoginRouter = Router();
-Users.findAll();
 const Model = Users as LoginModel;
 const Service = new LoginService(Model);
 const Controller = new LoginController(Service);
