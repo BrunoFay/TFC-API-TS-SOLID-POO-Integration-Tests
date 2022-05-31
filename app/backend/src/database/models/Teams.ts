@@ -2,11 +2,11 @@ import { Model, DataTypes } from 'sequelize';
 import db from '.';
 
 class Teams extends Model {
-  team_name!:string;
+  teamName!:string;
 }
 
 Teams.init({
-  team_name: DataTypes.STRING,
+  teamName: { type: DataTypes.STRING, allowNull: false, field: 'team_name' },
 }, {
   sequelize: db,
   underscored: true,
