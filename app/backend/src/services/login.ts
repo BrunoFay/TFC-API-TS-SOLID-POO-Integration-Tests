@@ -13,18 +13,27 @@ class LoginService {
   }
 
   async getUserByEmail(email: string) {
-    return await this.loginModel.findOne({ where: { email }, raw: true }) as User;
+    const user = await this.loginModel
+      .findOne({ where: { email }, raw: true }) as User;
+    return user;
   }
 
   async singIn(email: string, password: string) {
     const loginInfos: LoginInfos = { email };
     const userResult = await this.getUserByEmail(email);
-
     if (!userResult) return { errorStatus: 401, message: 'Incorrect email or password' };
-    const validatePassword = await bcrypt.compare(password, userResult?.password);
+    const validatePassword = await bcrypt.compare(password, userResult.password!);
     if (!validatePassword) return { errorStatus: 401, message: 'Incorrect email or password' };
     this.createToken(loginInfos);
-    return { user: { ...userResult }, token: this.token };
+    return {
+      user: {
+        id: userResult.id,
+        username: userResult.username,
+        role: userResult.role,
+        email: userResult.email,
+      },
+      token: this.token,
+    };
   }
 
   createToken(data: LoginInfos) {
