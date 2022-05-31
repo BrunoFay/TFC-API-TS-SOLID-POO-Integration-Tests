@@ -1,30 +1,29 @@
-import { JwtPayload } from "jsonwebtoken";
-import { User } from "./user";
+import { JwtPayload } from 'jsonwebtoken';
+import { User } from './user';
 
 export type LoginService = {
   singIn: (email: string, password: string) => Promise<LoginRequestResponse>;
-  validateToken:( token: string) => string|JwtPayload;
-}
+  validateToken:(token: string) => string | JwtPayload;
+};
 
 export type LoginInfos = {
   email: string,
   password?: string
-}
+};
 export type SequelizeOptionsById = {
   where: {
     email: string,
     password?: string
   }
-}
+};
 export type LoginModel = {
-  findOne: (options: SequelizeOptionsById) => Promise<User>
+  findOne: (options: { email:string }) => Promise<User | undefined>
 
-}
-
+};
 
 export type LoginRequestResponse = {
   user?: User,
   token?: string,
   errorStatus?: number,
   message?: string
-}
+};
