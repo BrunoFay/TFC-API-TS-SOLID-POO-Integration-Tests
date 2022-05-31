@@ -1,7 +1,13 @@
 import { Router } from "express";
+import Users from "../database/models/Users";
+import LoginService from "../services/login";
 import LoginController  from "../controllers/Login";
+import { LoginModel } from "../types/login";
+
 const LoginRouter = Router()
-const Controller = new LoginController()
+const Model = Users
+const Service = new LoginService(Model)
+const Controller = new LoginController(Service)
 LoginRouter.get('/login',Controller.login)
 
 export default LoginRouter
