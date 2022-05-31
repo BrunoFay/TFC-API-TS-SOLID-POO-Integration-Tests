@@ -12,9 +12,9 @@ class LoginController {
       const { email, password } = req.body;
       const isValidUser = await this.service.singIn(email, password);
       if (isValidUser.errorStatus) {
-        res.status(isValidUser.errorStatus).json(isValidUser.message);
+        return res.status(isValidUser.errorStatus).json({ message: isValidUser.message });
       }
-      res.status(200).json(isValidUser);
+      return res.status(200).json(isValidUser);
     } catch (error) {
       next(error);
     }
@@ -22,16 +22,14 @@ class LoginController {
 
   loginValidate: RequestHandler = async (req, res, next) => {
     try {
-      const token: string = req.headers.authorization!;
-      const isValidToken = this.service.validateToken(token);
-      if (!isValidToken) {
-        res.status(400).json('Invalid token');
+      const { authorization } = req.headers;
+      if (!authorization) {
+        return res.status(401).json('Invalid token');
       }
+      const isValidToken = this.service.validateToken(authorization);
       const { email } = isValidToken as { email: string };
-      console.log(email);
       const userRole = await this.service.getRole(email);
-
-      res.status(200).json(userRole);
+      return res.status(200).json(userRole);
     } catch (error) {
       next(error);
     }

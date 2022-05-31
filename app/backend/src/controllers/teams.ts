@@ -7,10 +7,10 @@ class TeamsController {
     this.service = TService;
   }
 
-  getAll: RequestHandler = async (req, res, next) => {
+  getAll: RequestHandler = async (_req, res, next) => {
     try {
       const teams = await this.service.getAll();
-      res.status(200).json(teams);
+      return res.status(200).json(teams);
     } catch (error) {
       next(error);
     }
@@ -20,7 +20,7 @@ class TeamsController {
     try {
       const { id } = req.params;
       const team = await this.service.getById(Number(id));
-      res.status(200).json(team);
+      return res.status(200).json(team);
     } catch (error) {
       next(error);
     }

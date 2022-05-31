@@ -5,11 +5,11 @@ const validateEmail: RequestHandler = (req, res, next) => {
   const emailReg = /^[\w_.-]+@([\w-]+\.)+\w{2,4}$/;
 
   if (!email) {
-    res.status(400).json({ message: 'All fields must be filled' });
+    return res.status(400).json({ message: 'All fields must be filled' });
   }
 
   if (!emailReg.test(email)) {
-    return res.status(400).send('Email inválido');
+    return res.status(401).json({ message: 'Incorrect email or password' });
   }
 
   next();
@@ -20,8 +20,8 @@ const validatePassword: RequestHandler = (req, res, next) => {
   if (!password) {
     return res.status(400).json({ message: 'All fields must be filled' });
   }
-  if (password.length < 6) {
-    return res.status(400).send('Password must have at least 6 characters');
+  if (password.length <= 6) {
+    return res.status(401).json({ message: 'Incorrect email or password' });
   }
   next();
 };
