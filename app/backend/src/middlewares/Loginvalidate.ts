@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 
 const validateEmail: RequestHandler = (req, res, next) => {
   const { email } = req.body;
-  const emailReg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+  const emailReg = /^[\w-]+@([\w-]+)+[\w-]{2,4}$/;
 
   if (!email) {
     res.status(400).json({ message: 'All fields must be filled' });
@@ -14,6 +14,7 @@ const validateEmail: RequestHandler = (req, res, next) => {
 
   next();
 };
+
 const validatePassword: RequestHandler = (req, res, next) => {
   const { password } = req.body;
   if (!password) {
