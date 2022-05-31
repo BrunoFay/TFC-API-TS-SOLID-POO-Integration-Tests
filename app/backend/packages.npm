@@ -1,1 +1,2 @@
-joi
+bcryptjs
+@types/bcryptjs
