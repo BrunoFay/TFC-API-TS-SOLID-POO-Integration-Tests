@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as cors from 'cors';
 import loginRouter from './routes/login';
+import gerenicError from './middlewares/HandleGenericError';
 
 class App {
   public app: express.Express;
@@ -24,6 +25,7 @@ class App {
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(loginRouter)
+    this.app.use(gerenicError);
     // ..
   }
 
