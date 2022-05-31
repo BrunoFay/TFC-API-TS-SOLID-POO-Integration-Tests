@@ -17,7 +17,7 @@ export type SequelizeOptionsById = {
   }
 };
 export type LoginModel = {
-  findOne: (options: { email:string }) => Promise<User | undefined>
+  findOne: (options: { where:{ email:string }, raw:boolean }) => Promise<User | undefined>
 
 };
 
