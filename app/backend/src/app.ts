@@ -3,6 +3,7 @@ import * as cors from 'cors';
 import loginRouter from './routes/login';
 import teamsRouter from './routes/teams';
 import matchesRouter from './routes/matches';
+import leaderBoardRouter from './routes/leaderboard';
 import gerenicError from './middlewares/HandleGenericError';
 
 class App {
@@ -29,6 +30,7 @@ class App {
     this.app.use(loginRouter);
     this.app.use(teamsRouter);
     this.app.use(matchesRouter);
+    this.app.use(leaderBoardRouter);
     this.app.use(gerenicError);
     // ..
   }
