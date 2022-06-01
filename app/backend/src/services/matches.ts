@@ -30,7 +30,7 @@ class MatchesService {
   }
 
   async updateProgress(id: number) {
-    return this.matchesModel.update(
+    this.matchesModel.update(
       { inProgress: false },
       { where: { id } },
     );

@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { validadeToken } from '../services/token';
-import getUsers from '../services/user';
+import { getUsers } from '../services/middlewareHelpers';
 
 const tokenValidate: RequestHandler = async (req, res, next) => {
   try {
