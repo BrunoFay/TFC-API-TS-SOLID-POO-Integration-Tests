@@ -1,4 +1,4 @@
-import { MatchesModel } from '../types/matches';
+import { MatchesModel, newMatch } from '../types/matches';
 import Teams from '../database/models/Teams';
 
 class MatchesService {
@@ -23,6 +23,10 @@ class MatchesService {
         include: [{ model: Teams, as: 'teamHome', attributes: { exclude: ['id'] } },
           { model: Teams, as: 'teamAway', attributes: { exclude: ['id'] } }],
       });
+  }
+
+  async create(match: newMatch) {
+    return this.matchesModel.create(match);
   }
 }
 export default MatchesService;
