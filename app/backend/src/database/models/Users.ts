@@ -29,6 +29,7 @@ Users.init({
   sequelize: db,
   underscored: true,
   timestamps: false,
+  tableName: 'users',
 });
 
 export default Users;

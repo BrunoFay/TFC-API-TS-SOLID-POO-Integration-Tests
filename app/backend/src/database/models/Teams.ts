@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import db from '.';
+import Matches from './Matches';
 
 class Teams extends Model {
   teamName!:string;
@@ -11,6 +12,7 @@ Teams.init({
   sequelize: db,
   underscored: true,
   timestamps: false,
+  tableName: 'teams',
 });
 
 export default Teams;

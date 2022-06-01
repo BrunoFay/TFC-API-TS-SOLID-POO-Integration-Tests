@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as cors from 'cors';
 import loginRouter from './routes/login';
 import teamsRouter from './routes/teams';
+import matchesRouter from './routes/matches';
 import gerenicError from './middlewares/HandleGenericError';
 
 class App {
@@ -27,7 +28,7 @@ class App {
     this.app.use(express.json());
     this.app.use(loginRouter);
     this.app.use(teamsRouter);
-
+    this.app.use(matchesRouter)
     this.app.use(gerenicError);
     // ..
   }
