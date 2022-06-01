@@ -10,6 +10,7 @@ const Service = new MatchesService(Model);
 const Controller = new MatchesController(Service);
 const matchsRouter = Router();
 matchsRouter.get('/matches', Controller.getAll);
+matchsRouter.patch('/matches/:id/finish', tokenValidate, Controller.updateProgress);
 matchsRouter.post('/matches', tokenValidate, Controller.create);
 
 export default matchsRouter;

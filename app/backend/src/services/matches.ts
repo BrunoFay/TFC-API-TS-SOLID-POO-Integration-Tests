@@ -28,5 +28,12 @@ class MatchesService {
   async create(match: newMatch) {
     return this.matchesModel.create(match);
   }
+
+  async updateProgress(id: number) {
+    return this.matchesModel.update(
+      { inProgress: false },
+      { where: { id } },
+    );
+  }
 }
 export default MatchesService;

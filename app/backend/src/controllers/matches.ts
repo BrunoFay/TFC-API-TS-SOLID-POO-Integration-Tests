@@ -30,6 +30,16 @@ class matchesController {
       next(error);
     }
   };
+
+  updateProgress: RequestHandler = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const matchUpdated = await this.matchesService.updateProgress(Number(id));
+      return res.status(200).json(matchUpdated);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default matchesController;
