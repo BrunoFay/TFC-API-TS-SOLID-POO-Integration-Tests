@@ -15,4 +15,5 @@ Teams.init({
   tableName: 'teams',
 });
 
+
 export default Teams;

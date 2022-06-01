@@ -7,7 +7,9 @@ class MatchesService {
     this.matchesModel = MatchesModel;
   }
   async getAll() {
-    return await this.matchesModel.findAll({})
+    return await this.matchesModel
+      .findAll({ include: [{ model: Teams, as: 'teamHome' }, { model: Teams, as: 'teamAway' }] })
+
   }
 }
 export default MatchesService;
