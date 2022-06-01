@@ -10,4 +10,4 @@ const Controller = new MatchesController(Service);
 const matchsRouter = Router();
 matchsRouter.get('/matches', Controller.getAll);
 
-export default matchsRouter
+export default matchsRouter;

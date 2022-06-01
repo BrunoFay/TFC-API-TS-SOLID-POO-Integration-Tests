@@ -1,5 +1,5 @@
 export type MatchesService = {
-getAll:()=>Promise<Match[]>;
+  getAll:()=>Promise<Match[]>;
 
 };
 export type MatchesModel = {
@@ -7,10 +7,10 @@ export type MatchesModel = {
 };
 
 export type Match = {
-    id:number;
-    homeTeam:number;
-    awayTeam:number;
-    homeScore:number;
-    awayScore:number;
-    inProgress:boolean;
-}
+  id:number;
+  homeTeam:number;
+  awayTeam:number;
+  homeScore:number;
+  awayScore:number;
+  inProgress:boolean;
+};

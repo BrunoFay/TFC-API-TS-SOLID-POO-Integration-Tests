@@ -6,6 +6,7 @@ class matchesController {
   constructor(matchesService:MatchesService) {
     this.matchesService = matchesService;
   }
+
   getAll:RequestHandler = async (_req, res, next) => {
     try {
       const matches = await this.matchesService.getAll();
@@ -13,7 +14,7 @@ class matchesController {
     } catch (error) {
       next(error);
     }
-  }
+  };
 }
 
 export default matchesController;

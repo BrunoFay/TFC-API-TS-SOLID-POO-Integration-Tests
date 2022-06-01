@@ -1,15 +1,18 @@
 import { MatchesModel } from '../types/matches';
-import Teams from '../database/models/Teams'
+import Teams from '../database/models/Teams';
 
 class MatchesService {
   matchesModel: MatchesModel;
-  constructor(MatchesModel: MatchesModel) {
-    this.matchesModel = MatchesModel;
+  constructor(matchesModel: MatchesModel) {
+    this.matchesModel = matchesModel;
   }
-  async getAll() {
-    return await this.matchesModel
-      .findAll({ include: [{ model: Teams, as: 'teamHome' }, { model: Teams, as: 'teamAway' }] })
 
+  async getAll() {
+    return this.matchesModel
+      .findAll({
+        include: [{ model: Teams, as: 'teamHome', attributes: { exclude: ['id'] } },
+          { model: Teams, as: 'teamAway', attributes: { exclude: ['id'] } }],
+      });
   }
 }
 export default MatchesService;

@@ -28,7 +28,7 @@ class App {
     this.app.use(express.json());
     this.app.use(loginRouter);
     this.app.use(teamsRouter);
-    this.app.use(matchesRouter)
+    this.app.use(matchesRouter);
     this.app.use(gerenicError);
     // ..
   }
