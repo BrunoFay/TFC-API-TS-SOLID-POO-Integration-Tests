@@ -1,5 +1,6 @@
 export type MatchesService = {
   getAll:()=>Promise<Match[]>;
+  getAllInProgress:(status:string)=>Promise<Match[]>;
 
 };
 export type MatchesModel = {

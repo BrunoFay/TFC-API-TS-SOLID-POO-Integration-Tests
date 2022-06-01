@@ -14,5 +14,15 @@ class MatchesService {
           { model: Teams, as: 'teamAway', attributes: { exclude: ['id'] } }],
       });
   }
+
+  async getAllInProgress(status: string) {
+    const transformStatusToBoolean = (status === 'true');
+    return this.matchesModel
+      .findAll({
+        where: { inProgress: transformStatusToBoolean },
+        include: [{ model: Teams, as: 'teamHome', attributes: { exclude: ['id'] } },
+          { model: Teams, as: 'teamAway', attributes: { exclude: ['id'] } }],
+      });
+  }
 }
 export default MatchesService;
