@@ -1,4 +1,4 @@
-import { MatchesModel, newMatch } from '../types/matches';
+import { MatchesModel, newMatch, RequestGoalsToUpdate } from '../types/matches';
 import Teams from '../database/models/Teams';
 
 class MatchesService {
@@ -32,6 +32,16 @@ class MatchesService {
   async updateProgress(id: number) {
     this.matchesModel.update(
       { inProgress: false },
+      { where: { id } },
+    );
+  }
+
+  async updateGoals(id: number, golsToUpdate: RequestGoalsToUpdate) {
+    this.matchesModel.update(
+      {
+        homeTeamGoals: golsToUpdate.homeTeamGoals,
+        awayTeamGoals: golsToUpdate.awayTeamGoals,
+      },
       { where: { id } },
     );
   }

@@ -12,6 +12,7 @@ const Controller = new MatchesController(Service);
 const matchsRouter = Router();
 matchsRouter.get('/matches', Controller.getAll);
 matchsRouter.patch('/matches/:id/finish', tokenValidate, Controller.updateProgress);
+matchsRouter.patch('/matches/:id', tokenValidate, Controller.updateGols);
 matchsRouter.post('/matches', tokenValidate, matchesValidate, Controller.create);
 
 export default matchsRouter;

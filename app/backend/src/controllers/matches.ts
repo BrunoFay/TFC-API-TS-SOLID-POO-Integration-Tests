@@ -40,6 +40,16 @@ class matchesController {
       next(error);
     }
   };
+
+  updateGols: RequestHandler = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await this.matchesService.updateGoals(Number(id), req.body);
+      return res.status(200).json({ message: 'Finished' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default matchesController;

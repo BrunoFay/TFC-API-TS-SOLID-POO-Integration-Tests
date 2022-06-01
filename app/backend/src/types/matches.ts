@@ -3,6 +3,7 @@ export type MatchesService = {
   getAllInProgress: (status: string) => Promise<Match[]>;
   create: (match: newMatch) => Promise<Match>
   updateProgress: (id: number) => Promise<any>
+  updateGoals: (id: number, goalsToUpdate: RequestGoalsToUpdate) => Promise<any>
 
 };
 export type MatchesModel = {
@@ -10,6 +11,11 @@ export type MatchesModel = {
   create: (match: newMatch) => Promise<Match>
   update: (status: any, id: any) => Promise<any>
 
+};
+
+export type RequestGoalsToUpdate = {
+  homeTeamGoals: number
+  awayTeamGoals: number
 };
 
 export type Match = {
