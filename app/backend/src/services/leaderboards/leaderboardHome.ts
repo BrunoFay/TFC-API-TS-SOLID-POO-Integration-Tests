@@ -1,9 +1,12 @@
 import { LeaderBoard, LeaderBoardModel } from '../../types/leaderBoard';
 import TeamsM from '../../database/models/Teams';
-/* referencia pararemover duplicados https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects */
+/* referencia para remover duplicados https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects
+referencia sort compare https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value
+*/
 class LeaderBoardHomeService {
-  matchModel:LeaderBoardModel;
-  arrayWithoutDuplicates:[];
+  matchModel: LeaderBoardModel;
+  arrayWithoutDuplicates: [];
+  lintSortCompare:any;
   constructor(matchModel: LeaderBoardModel) {
     this.matchModel = matchModel;
   }
@@ -103,15 +106,22 @@ class LeaderBoardHomeService {
     return Number(efficiency.toFixed(2));
   }
 
+  Sortcompare(a: number, b: number) {
+    this.lintSortCompare = '';
+    if (a > b) return -1;
+    if (a < b) return 1;
+    return 0;
+  }
+
   async sortTeams(teams: any) {
     const t = await teams;
     this.arrayWithoutDuplicates = t
       .filter((v: any, i: any, a: any) => a.findIndex((v2: any) => (v2.name === v.name)) === i);
-    return this.arrayWithoutDuplicates.sort((a: any, b: any) => a.goalsOwn - b.goalsOwn)
-      .sort((a: LeaderBoard, b: LeaderBoard) => a.goalsFavor - b.goalsFavor)
-      .sort((a: LeaderBoard, b: LeaderBoard) => a.goalsBalance - b.goalsBalance)
-      .sort((a: LeaderBoard, b: LeaderBoard) => a.totalVictories - b.totalVictories)
-      .sort((a: LeaderBoard, b: LeaderBoard) => b.totalPoints - a.totalPoints);
+    return this.arrayWithoutDuplicates
+      .sort((a: LeaderBoard, b: LeaderBoard) => this.Sortcompare(a.goalsOwn, b.goalsOwn))
+      .sort((a: LeaderBoard, b: LeaderBoard) => this.Sortcompare(a.goalsFavor, b.goalsFavor))
+      .sort((a: LeaderBoard, b: LeaderBoard) => this.Sortcompare(a.goalsBalance, b.goalsBalance))
+      .sort((a: LeaderBoard, b: LeaderBoard) => this.Sortcompare(a.totalPoints, b.totalPoints));
   }
 
   async getAll() {
