@@ -1,8 +1,8 @@
 export type LeaderBoardService = {
-  getAll: () => Promise<any>
+  getAll: () => Promise<LeaderBoard[]>
 };
 export type LeaderBoardModel = {
-  findAll: (op:any) => Promise<any>
+  findAll: (op:any) => Promise<LeaderBoard[]>
 };
 export type LeaderBoard = {
   name: string,
