@@ -123,8 +123,8 @@ class LeaderBoardService {
   async getEfficiency(teamId: number) {
     const totalPoints = await this.countGamePoints(teamId);
     const totalGames = await this.countTotalGames(teamId);
-    const efficiency = totalPoints / ((totalGames * 3) * 100);
-    return efficiency.toFixed(2);
+    const efficiency = (totalPoints / (totalGames * 3)) * 100;
+    return Number(efficiency.toFixed(2));
   }
 
   async sortTeams(teams: any) {
