@@ -23,7 +23,7 @@ const validateIfTeamsExistsInDb: RequestHandler = async (req, res, next) => {
     const getAwayTeam = await getTeam(awayTeam);
 
     if (!getHomeTeam || !getAwayTeam) {
-      return res.status(401).json({ message: 'There is no team with such id!' });
+      return res.status(404).json({ message: 'There is no team with such id!' });
     }
     next();
   } catch (error) {
