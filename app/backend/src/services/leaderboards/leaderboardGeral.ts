@@ -1,9 +1,9 @@
-import { LeaderBoard, LeaderBoardModel } from '../types/leaderBoard';
-import TeamsM from '../database/models/Teams';
-/* referencia pararemover duplicados https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects */
+import Teams from '../../database/models/Teams';
+import { LeaderBoard, LeaderBoardModel } from '../../types/leaderBoard';
+
 class LeaderBoardService {
-  matchModel:LeaderBoardModel;
-  arrayWithoutDuplicates:[];
+  matchModel: LeaderBoardModel;
+  arrayWithoutDuplicates: [];
   constructor(matchModel: LeaderBoardModel) {
     this.matchModel = matchModel;
   }
@@ -11,7 +11,7 @@ class LeaderBoardService {
   async getHomeMatches(teamId: number) {
     const homeMatches = await this.matchModel.findAll({
       where: { homeTeam: teamId, inProgress: false },
-      include: { model: TeamsM, as: 'teamHome', attributes: { exclude: ['id'] } },
+      include: { model: Teams, as: 'teamHome', attributes: { exclude: ['id'] } },
     });
     return homeMatches;
   }
@@ -19,7 +19,7 @@ class LeaderBoardService {
   async getAwayMatches(teamId: number) {
     const awayMatches = await this.matchModel.findAll({
       where: { awayTeam: teamId, inProgress: false },
-      include: { model: TeamsM, as: 'teamAway', attributes: { exclude: ['id'] } },
+      include: { model: Teams, as: 'teamAway', attributes: { exclude: ['id'] } },
     });
     return awayMatches;
   }
@@ -141,7 +141,7 @@ class LeaderBoardService {
   async getAll() {
     const matches = await this.matchModel.findAll({
       where: { inProgress: false },
-      include: { model: TeamsM, as: 'teamHome', attributes: { exclude: ['id'] } },
+      include: { model: Teams, as: 'teamHome', attributes: { exclude: ['id'] } },
     });
     const leaderboardsHome = Promise.all(matches.map(async (team: any) => ({
       name: team.teamHome.teamName,

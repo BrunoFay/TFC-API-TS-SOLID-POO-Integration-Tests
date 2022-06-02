@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { LeaderBoardService } from '../types/leaderBoard';
+import { LeaderBoardService } from '../../types/leaderBoard';
 
 class LeaderBoardController {
   leaderBoardService: LeaderBoardService;
