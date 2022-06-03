@@ -20,6 +20,8 @@ services:
   backend:
     build: ./backend
     platform: linux/x86_64
+    ports:
+      - 3001:3001
     restart: 'always'
     # ...
     depends_on:
