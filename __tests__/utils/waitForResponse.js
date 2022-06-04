@@ -16,6 +16,7 @@ const waitForResponse = async ({
         page.removeListener('response', onResponse);
         clearTimeout(guard);
       }
+
       const onResponse = async (response) => {
         const type = response?._request?._initiator?.type;
         const method = response?.request?.().method?.();
@@ -49,7 +50,7 @@ const waitForResponse = async ({
             body,
           });
         }
-        if (process.env.DEBUG === 'true' && method !== 'OPTIONS' && type === 'script') return reject({
+        if (method !== 'OPTIONS') return reject({
           typeExpected:expectedRequestType,
           typeReceived: type,
           methodExpected: expectedRequestMethod,
@@ -63,6 +64,7 @@ const waitForResponse = async ({
       };
 
       page.on('response', onResponse);
+
       const guard = setTimeout(() => {
         clear();
         throw new Error(`Foi atingido o tempo máximo de espera da requisição com os critérios: ${JSON.stringify({
@@ -74,10 +76,10 @@ const waitForResponse = async ({
           timeOut
         }, null, '\t')}`);
       }, timeOut)
+
       await trigger(page)
     } catch (error) {
       return reject(error);
     }
   });
-
 module.exports = waitForResponse;

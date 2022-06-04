@@ -45,8 +45,8 @@ describe(getRequirement(31), () => {
 describe(getRequirement(32), () => {
   it('Será avaliado que após acrescentar a partida Botafogo 2 X 1 Grêmio e fazer a requisição ao endpoint /leaderboard/away será retonado os campos e valores corretos', async () => {
     const dadosInsert = {
-      homeTeam: teams[3].teamName,
-      awayTeam: teams[8].teamName,
+      homeTeam: teams[2].teamName,
+      awayTeam: teams[7].teamName,
       homeGoals: twoGoals,
       awayGoals: oneGoal
     }
