@@ -2,7 +2,9 @@ import { RequestHandler } from 'express';
 import { validadeToken } from '../services/token';
 import { getUsers } from '../services/middlewareHelpers';
 
-const tokenValidate: RequestHandler = async (req, res, next) => {
+export default  class TokenValidates{
+
+ tokenValidate: RequestHandler = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
     if (!authorization) {
@@ -17,4 +19,4 @@ const tokenValidate: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-export default tokenValidate;
+}

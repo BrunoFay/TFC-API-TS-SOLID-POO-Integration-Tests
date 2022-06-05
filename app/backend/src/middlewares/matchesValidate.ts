@@ -1,7 +1,8 @@
 import { RequestHandler } from 'express';
 import { getTeam } from '../services/middlewareHelpers';
 
-const validateIfTeamsAreDifferents: RequestHandler = (req, res, next) => {
+class MatchesValidates{
+ validateIfTeamsAreDifferents: RequestHandler = (req, res, next) => {
   try {
     const { homeTeam, awayTeam } = req.body;
     if (homeTeam === awayTeam) {
@@ -15,7 +16,7 @@ const validateIfTeamsAreDifferents: RequestHandler = (req, res, next) => {
   }
 };
 
-const validateIfTeamsExistsInDb: RequestHandler = async (req, res, next) => {
+ validateIfTeamsExistsInDb: RequestHandler = async (req, res, next) => {
   try {
     const { homeTeam, awayTeam } = req.body;
 
@@ -30,6 +31,6 @@ const validateIfTeamsExistsInDb: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+}
 
-const validations = [validateIfTeamsAreDifferents, validateIfTeamsExistsInDb];
-export default validations;
+export default MatchesValidates;

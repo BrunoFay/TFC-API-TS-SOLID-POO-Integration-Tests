@@ -1,6 +1,8 @@
 import { RequestHandler } from 'express';
 
-const validateEmail: RequestHandler = (req, res, next) => {
+export default class LoginValidates {
+
+ validateEmail: RequestHandler = (req, res, next) => {
   const { email } = req.body;
   const emailReg = /^[\w_.-]+@([\w-]+\.)+\w{2,4}$/;
 
@@ -15,7 +17,7 @@ const validateEmail: RequestHandler = (req, res, next) => {
   next();
 };
 
-const validatePassword: RequestHandler = (req, res, next) => {
+ validatePassword: RequestHandler = (req, res, next) => {
   const { password } = req.body;
   if (!password) {
     return res.status(400).json({ message: 'All fields must be filled' });
@@ -24,7 +26,5 @@ const validatePassword: RequestHandler = (req, res, next) => {
     return res.status(401).json({ message: 'Incorrect email or password' });
   }
   next();
-};
-
-const validations = [validateEmail, validatePassword];
-export default validations;
+}
+}
