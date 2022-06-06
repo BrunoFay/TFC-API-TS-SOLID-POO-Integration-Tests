@@ -36,7 +36,7 @@ const validateLeaderboardHeader = async (leaderboardTestsIds, page) => {
 };
 
 const validateLeaderboardBody = async (scoreBoardTableBodyMock, leaderboardTestsIds, page, apiPort, endpoint, actionTrigger) => {
-  await page.waitForTimeout(15000);
+  await page.waitForTimeout(500);
 
 
   const { body: scoreBoardTableResponse } = await waitForResponse({

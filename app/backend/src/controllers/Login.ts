@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { LoginService } from '../types/login';
 
 class LoginController {
-  service: LoginService;
+  private service: LoginService;
   constructor(LService: LoginService) {
     this.service = LService;
   }

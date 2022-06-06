@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { TeamsService } from '../types/teams';
 
 class TeamsController {
-  service: TeamsService;
+  private service: TeamsService;
   constructor(TService: TeamsService) {
     this.service = TService;
   }

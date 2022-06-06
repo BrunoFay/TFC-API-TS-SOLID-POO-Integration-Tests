@@ -36,11 +36,11 @@ class MatchesService {
     );
   }
 
-  async updateGoals(id: number, golsToUpdate: RequestGoalsToUpdate) {
+  async updateGoals(id: number, goalsToUpdate: RequestGoalsToUpdate) {
     this.matchesModel.update(
       {
-        homeTeamGoals: golsToUpdate.homeTeamGoals,
-        awayTeamGoals: golsToUpdate.awayTeamGoals,
+        homeTeamGoals: goalsToUpdate.homeTeamGoals,
+        awayTeamGoals: goalsToUpdate.awayTeamGoals,
       },
       { where: { id } },
     );

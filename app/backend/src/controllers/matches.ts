@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { MatchesService } from '../types/matches';
 
 class matchesController {
-  matchesService: MatchesService;
+  private matchesService: MatchesService;
   constructor(matchesService: MatchesService) {
     this.matchesService = matchesService;
   }
@@ -41,7 +41,7 @@ class matchesController {
     }
   };
 
-  updateGols: RequestHandler = async (req, res, next) => {
+  updateGoals: RequestHandler = async (req, res, next) => {
     try {
       const { id } = req.params;
       await this.matchesService.updateGoals(Number(id), req.body);

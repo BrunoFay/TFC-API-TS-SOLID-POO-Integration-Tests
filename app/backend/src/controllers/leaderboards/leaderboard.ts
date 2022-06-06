@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { LeaderBoardService } from '../../types/leaderBoard';
 
 class LeaderBoardController {
-  leaderBoardService: LeaderBoardService;
+  private leaderBoardService: LeaderBoardService;
   constructor(leaderBoardService: LeaderBoardService) {
     this.leaderBoardService = leaderBoardService;
   }

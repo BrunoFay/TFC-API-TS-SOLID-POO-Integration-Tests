@@ -10,13 +10,16 @@ const Model = Matches as MatchesModel;
 const Service = new MatchesService(Model);
 const Controller = new MatchesController(Service);
 const matchsRouter = Router();
-const MiddlewareToken = new TokenValidate()
-const MiddlewareMatches = new MatchesValidate()
+const MiddlewareToken = new TokenValidate();
+const MiddlewareMatches = new MatchesValidate();
 matchsRouter.get('/matches', Controller.getAll);
 matchsRouter.patch('/matches/:id/finish', MiddlewareToken.tokenValidate, Controller.updateProgress);
-matchsRouter.patch('/matches/:id', MiddlewareToken.tokenValidate, Controller.updateGols);
-matchsRouter.post('/matches', MiddlewareToken.tokenValidate,
-    MiddlewareMatches.validateIfTeamsAreDifferents,
-    Controller.create);
+matchsRouter.patch('/matches/:id', MiddlewareToken.tokenValidate, Controller.updateGoals);
+matchsRouter.post(
+  '/matches',
+  MiddlewareToken.tokenValidate,
+  MiddlewareMatches.validateIfTeamsAreDifferents,
+  Controller.create,
+);
 
 export default matchsRouter;

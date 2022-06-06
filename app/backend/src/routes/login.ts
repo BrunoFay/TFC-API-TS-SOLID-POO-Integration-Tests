@@ -11,7 +11,12 @@ const Service = new LoginService(Model);
 const Controller = new LoginController(Service);
 const Middleware = new LoginMiddleware();
 
-LoginRouter.post('/login', Middleware.validateEmail,Middleware.validatePassword, Controller.login);
+LoginRouter.post(
+  '/login',
+  Middleware.validateEmail,
+  Middleware.validatePassword,
+  Controller.login,
+);
 LoginRouter.get('/login/validate', Controller.loginValidate);
 
 export default LoginRouter;
