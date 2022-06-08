@@ -108,10 +108,18 @@ export default class LeaderboardsHelpers {
     return totalDraws;
   }
 
-  static async getEfficiency(matches: LeaderBoard[]) {
-    const totalPoints = await this.countGamePoints(matches);
-    const totalGames = await this.countTotalGames(matches);
-    const efficiency = (totalPoints / (totalGames * 3)) * 100;
+  static async getEfficiency(matches: LeaderBoard[], awayTeam = false) {
+    let totalPoints; let totalGames; let
+      efficiency;
+    if (awayTeam) {
+      totalPoints = await this.countGamePoints(matches, awayTeam);
+      totalGames = await this.countTotalGames(matches);
+      efficiency = (totalPoints / (totalGames * 3)) * 100;
+      return Number(efficiency.toFixed(2));
+    }
+    totalPoints = await this.countGamePoints(matches);
+    totalGames = await this.countTotalGames(matches);
+    efficiency = (totalPoints / (totalGames * 3)) * 100;
     return Number(efficiency.toFixed(2));
   }
 

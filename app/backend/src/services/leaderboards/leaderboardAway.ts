@@ -39,7 +39,7 @@ class LeaderBoardAwayService {
         goalsFavor: await LeaderboardsHelpers.countTotalGoalsFavor(awayMatches, true),
         goalsOwn: await LeaderboardsHelpers.countTotalGoalsOwn(awayMatches, true),
         goalsBalance: await LeaderboardsHelpers.countTotalGoalsBalance(awayMatches, true),
-        efficiency: await LeaderboardsHelpers.getEfficiency(awayMatches),
+        efficiency: await LeaderboardsHelpers.getEfficiency(awayMatches, true),
       };
     }));
     const teamsSorted = LeaderboardsHelpers.sortTeams(leaderboardsAway);
