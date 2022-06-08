@@ -110,7 +110,7 @@ describe(getRequirement(25), () => {
   });
 });
 
-describe(getRequirement(26), () => {
+describe.only(getRequirement(26), () => {
   it('Será validado na API que não é possível inserir uma partida com time que não existe na tabela teams', async () => {
     const dadosInsert = {
       homeTeam: 12345,

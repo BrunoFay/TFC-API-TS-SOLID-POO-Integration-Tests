@@ -19,6 +19,8 @@ matchsRouter.post(
   '/matches',
   MiddlewareToken.tokenValidate,
   MiddlewareMatches.validateIfTeamsAreDifferents,
+  MiddlewareMatches.validateIfTeamsExistsInDb,
+
   Controller.create,
 );
 
