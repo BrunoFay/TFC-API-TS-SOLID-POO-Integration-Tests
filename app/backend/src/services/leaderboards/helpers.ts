@@ -1,12 +1,12 @@
-import { LeaderBoard } from '../../types/leaderBoard';
+import { Match } from '../../types/matches';
 
 export default class LeaderboardsHelpers {
-  static async countTotalGames(matches: LeaderBoard[]) {
+  static countTotalGames(matches: Match[]) {
     const totalGames = matches.length;
     return totalGames;
   }
 
-  static async countGamePoints(matches: LeaderBoard[], awayTeam = false) {
+  static countGamePoints(matches: Match[], awayTeam = false) {
     let countPoints;
     if (awayTeam) {
       countPoints = matches.reduce((acc: number, curr: any) => {
@@ -24,7 +24,7 @@ export default class LeaderboardsHelpers {
     return countPoints;
   }
 
-  static async countTotalGoalsFavor(matches: LeaderBoard[], awayTeam = false) {
+  static countTotalGoalsFavor(matches: Match[], awayTeam = false) {
     if (awayTeam) {
       const totalGoalsFavor = matches
         .reduce((acc: number, curr: any) => acc + curr.awayTeamGoals, 0);
@@ -36,7 +36,7 @@ export default class LeaderboardsHelpers {
     return totalGoalsFavor;
   }
 
-  static async countTotalGoalsOwn(matches: LeaderBoard[], awayTeam = false) {
+  static countTotalGoalsOwn(matches: Match[], awayTeam = false) {
     if (awayTeam) {
       const totalGoalsFavor = matches
         .reduce((acc: number, curr: any) => acc + curr.homeTeamGoals, 0);
@@ -47,22 +47,22 @@ export default class LeaderboardsHelpers {
     return totalGoalsFavor;
   }
 
-  static async countTotalGoalsBalance(matches: LeaderBoard[], awayTeam = false) {
+  static countTotalGoalsBalance(matches: Match[], awayTeam = false) {
     let homeGoals; let awayGoals; let
       balanceGoals;
     if (awayTeam) {
-      homeGoals = await this.countTotalGoalsFavor(matches, awayTeam);
-      awayGoals = await this.countTotalGoalsOwn(matches, awayTeam);
+      homeGoals = this.countTotalGoalsFavor(matches, awayTeam);
+      awayGoals = this.countTotalGoalsOwn(matches, awayTeam);
       balanceGoals = homeGoals - awayGoals;
       return balanceGoals;
     }
-    homeGoals = await this.countTotalGoalsFavor(matches);
-    awayGoals = await this.countTotalGoalsOwn(matches);
+    homeGoals = this.countTotalGoalsFavor(matches);
+    awayGoals = this.countTotalGoalsOwn(matches);
     balanceGoals = homeGoals - awayGoals;
     return balanceGoals;
   }
 
-  static async countVictories(matches: LeaderBoard[], awayTeam = false) {
+  static countVictories(matches: Match[], awayTeam = false) {
     let totalVictories;
     if (awayTeam) {
       totalVictories = matches
@@ -80,7 +80,7 @@ export default class LeaderboardsHelpers {
     return totalVictories;
   }
 
-  static async countLoses(matches: LeaderBoard[], awayTeam = false) {
+  static countLoses(matches: Match[], awayTeam = false) {
     let totalLoses;
     if (awayTeam) {
       totalLoses = matches
@@ -98,7 +98,7 @@ export default class LeaderboardsHelpers {
     return totalLoses;
   }
 
-  static async countDraws(matches: LeaderBoard[]) {
+  static countDraws(matches: Match[]) {
     const totalDraws = matches
       .reduce((
         acc: number,
@@ -108,23 +108,23 @@ export default class LeaderboardsHelpers {
     return totalDraws;
   }
 
-  static async getEfficiency(matches: LeaderBoard[], awayTeam = false) {
+  static getEfficiency(matches: Match[], awayTeam = false) {
     let totalPoints; let totalGames; let
       efficiency;
     if (awayTeam) {
-      totalPoints = await this.countGamePoints(matches, awayTeam);
-      totalGames = await this.countTotalGames(matches);
+      totalPoints = this.countGamePoints(matches, awayTeam);
+      totalGames = this.countTotalGames(matches);
       efficiency = (totalPoints / (totalGames * 3)) * 100;
       return Number(efficiency.toFixed(2));
     }
-    totalPoints = await this.countGamePoints(matches);
-    totalGames = await this.countTotalGames(matches);
+    totalPoints = this.countGamePoints(matches);
+    totalGames = this.countTotalGames(matches);
     efficiency = (totalPoints / (totalGames * 3)) * 100;
     return Number(efficiency.toFixed(2));
   }
 
-  static async sortTeams(teams: any) {
-    const teamsSorted = await teams
+  static sortTeams(teams: any) {
+    const teamsSorted = teams
       .filter((v: any, i: any, a: any) => a.findIndex((v2: any) => (v2.name === v.name)) === i);
     return teamsSorted.sort((a: any, b: any) =>
       b.totalPoints - a.totalPoints

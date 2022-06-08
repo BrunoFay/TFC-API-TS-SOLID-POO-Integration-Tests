@@ -1,8 +1,10 @@
+import { Match } from './matches';
+
 export type LeaderBoardService = {
   getAll: () => Promise<LeaderBoard[]>
 };
 export type LeaderBoardModel = {
-  findAll: (op:any) => Promise<LeaderBoard[]>
+  findAll: (op:any) => Promise<Match[]>
 };
 export type LeaderBoard = {
   name: string,

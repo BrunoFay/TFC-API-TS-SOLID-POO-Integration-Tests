@@ -1,20 +1,19 @@
 import { LeaderBoardModel } from '../../types/leaderBoard';
 import TeamsM from '../../database/models/Teams';
 import LeaderboardsHelpers from './helpers';
+import { Match } from '../../types/matches';
 
 class LeaderBoardAwayService {
   private matchModel: LeaderBoardModel;
   private helpers = new LeaderboardsHelpers();
+  private allMatches: Match[];
   constructor(matchModel: LeaderBoardModel) {
     this.matchModel = matchModel;
   }
 
-  private async getHomeMatches(teamId: number) {
-    const homeMatches = await this.matchModel.findAll({
-      where: { awayTeam: teamId, inProgress: false },
-      include: { model: TeamsM, as: 'teamHome', attributes: { exclude: ['id'] } },
-    });
-    return homeMatches;
+  private getAwayMatches(teamId: number) {
+    const awayMatches = this.allMatches.filter((matches) => matches.awayTeam === teamId);
+    return awayMatches;
   }
 
   async getAllMatches() {
@@ -26,22 +25,22 @@ class LeaderBoardAwayService {
   }
 
   async getAll() {
-    const matches = await this.getAllMatches();
-    const leaderboardsAway = await Promise.all(matches.map(async (team: any) => {
-      const awayMatches = await this.getHomeMatches(team.homeTeam);
+    this.allMatches = await this.getAllMatches();
+    const leaderboardsAway = this.allMatches.map((team: any) => {
+      const awayMatches = this.getAwayMatches(team.homeTeam);
       return {
         name: team.teamHome.teamName,
-        totalPoints: await LeaderboardsHelpers.countGamePoints(awayMatches, true),
-        totalGames: await LeaderboardsHelpers.countTotalGames(awayMatches),
-        totalVictories: await LeaderboardsHelpers.countVictories(awayMatches, true),
-        totalLosses: await LeaderboardsHelpers.countLoses(awayMatches, true),
-        totalDraws: await LeaderboardsHelpers.countDraws(awayMatches),
-        goalsFavor: await LeaderboardsHelpers.countTotalGoalsFavor(awayMatches, true),
-        goalsOwn: await LeaderboardsHelpers.countTotalGoalsOwn(awayMatches, true),
-        goalsBalance: await LeaderboardsHelpers.countTotalGoalsBalance(awayMatches, true),
-        efficiency: await LeaderboardsHelpers.getEfficiency(awayMatches, true),
+        totalPoints: LeaderboardsHelpers.countGamePoints(awayMatches, true),
+        totalGames: LeaderboardsHelpers.countTotalGames(awayMatches),
+        totalVictories: LeaderboardsHelpers.countVictories(awayMatches, true),
+        totalLosses: LeaderboardsHelpers.countLoses(awayMatches, true),
+        totalDraws: LeaderboardsHelpers.countDraws(awayMatches),
+        goalsFavor: LeaderboardsHelpers.countTotalGoalsFavor(awayMatches, true),
+        goalsOwn: LeaderboardsHelpers.countTotalGoalsOwn(awayMatches, true),
+        goalsBalance: LeaderboardsHelpers.countTotalGoalsBalance(awayMatches, true),
+        efficiency: LeaderboardsHelpers.getEfficiency(awayMatches, true),
       };
-    }));
+    });
     const teamsSorted = LeaderboardsHelpers.sortTeams(leaderboardsAway);
 
     return teamsSorted;

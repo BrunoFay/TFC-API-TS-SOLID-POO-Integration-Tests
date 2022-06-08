@@ -1,41 +1,41 @@
+import { Match } from '../../types/matches';
 import Teams from '../../database/models/Teams';
-import { LeaderBoard, LeaderBoardModel } from '../../types/leaderBoard';
+import { LeaderBoardModel } from '../../types/leaderBoard';
 
 class LeaderBoardService {
   private matchModel: LeaderBoardModel;
+  private allMatches: Match[];
 
   constructor(matchModel: LeaderBoardModel) {
     this.matchModel = matchModel;
   }
 
-  private async getHomeMatches(teamId: number) {
-    const homeMatches = await this.matchModel.findAll({
-      where: { homeTeam: teamId, inProgress: false },
-      include: { model: Teams, as: 'teamHome', attributes: { exclude: ['id'] } },
-    });
-    return homeMatches;
-  }
-
-  private async getAwayMatches(teamId: number) {
-    const awayMatches = await this.matchModel.findAll({
-      where: { awayTeam: teamId, inProgress: false },
-      include: { model: Teams, as: 'teamAway', attributes: { exclude: ['id'] } },
-    });
+  private getAwayMatches(teamId: number) {
+    const awayMatches = this.allMatches.filter((matches) => matches.awayTeam === teamId);
     return awayMatches;
   }
 
-  private static async countTotalGames(matchesH: LeaderBoard[], matchesA: LeaderBoard[]) {
-    const totalGames = matchesH.length + matchesA.length;
+  private getHomeMatches(teamId: number) {
+    const homeMatches = this.allMatches.filter((matches) => matches.homeTeam === teamId);
+    return homeMatches;
+  }
+
+  private countTotalGames(teamId: number) {
+    const home = this.getHomeMatches(teamId);
+    const away = this.getAwayMatches(teamId);
+    const totalGames = home.length + away.length;
     return totalGames;
   }
 
-  private static async countGamePoints(matchesH: LeaderBoard[], matchesA: LeaderBoard[]) {
-    const countPoints = matchesH.reduce((acc: number, curr: any) => {
+  private countGamePoints(teamId: number) {
+    const home = this.getHomeMatches(teamId);
+    const away = this.getAwayMatches(teamId);
+    const countPoints = home.reduce((acc: number, curr: any) => {
       if (curr.homeTeamGoals > curr.awayTeamGoals) return acc + 3;
       if (curr.homeTeamGoals === curr.awayTeamGoals) return acc + 1;
       return acc;
     }, 0)
-      + matchesA.reduce((acc: number, curr: any) => {
+      + away.reduce((acc: number, curr: any) => {
         if (curr.homeTeamGoals < curr.awayTeamGoals) return acc + 3;
         if (curr.homeTeamGoals === curr.awayTeamGoals) return acc + 1;
         return acc;
@@ -43,71 +43,88 @@ class LeaderBoardService {
     return countPoints;
   }
 
-  private static async countTotalGoalsFavor(matchesH: LeaderBoard[], matchesA: LeaderBoard[]) {
-    const totalGoalsFavor = matchesH.reduce((acc: number, curr: any) => acc + curr.homeTeamGoals, 0)
-      + matchesA.reduce((acc: number, curr: any) => acc + curr.awayTeamGoals, 0);
-    return totalGoalsFavor;
-  }
-
-  private static async countTotalGoalsOwn(matchesH: LeaderBoard[], matchesA: LeaderBoard[]) {
-    const totalGoalsFavor = matchesA
+  private countTotalGoalsFavor(teamId: number) {
+    const home = this.getHomeMatches(teamId);
+    const away = this.getAwayMatches(teamId);
+    const totalGoalsFavor = home
       .reduce((acc: number, curr: any) => acc + curr.homeTeamGoals, 0)
-      + matchesH.reduce((acc: number, curr: any) => acc + curr.awayTeamGoals, 0);
+      + away.reduce((acc: number, curr: any) => acc + curr.awayTeamGoals, 0);
     return totalGoalsFavor;
   }
 
-  private static async countTotalGoalsBalance(matchesH: LeaderBoard[], matchesA: LeaderBoard[]) {
-    const homeGoals = await this.countTotalGoalsFavor(matchesH, matchesA);
-    const awayGoals = await this.countTotalGoalsOwn(matchesA, matchesH);
+  private countTotalGoalsOwn(teamId: number) {
+    const home = this.getHomeMatches(teamId);
+    const away = this.getAwayMatches(teamId);
+    const totalGoalsFavor = away
+      .reduce((acc: number, curr: any) => acc + curr.homeTeamGoals, 0)
+      + home.reduce((acc: number, curr: any) => acc + curr.awayTeamGoals, 0);
+    return totalGoalsFavor;
+  }
+
+  private countTotalGoalsBalance(teamId: number) {
+    const homeGoals = this.countTotalGoalsFavor(teamId);
+    const awayGoals = this.countTotalGoalsOwn(teamId);
     const balanceGoals = homeGoals - awayGoals;
     return balanceGoals;
   }
 
-  private static async countVictories(matchesH: LeaderBoard[], matchesA: LeaderBoard[]) {
-    const totalVictories = matchesH.reduce((
-      acc: number,
-      curr: any,
-    ) => ((curr.homeTeamGoals > curr.awayTeamGoals) ? acc + 1 : acc), 0)
-      + matchesA.reduce((
+  private countVictories(teamId: number) {
+    const home = this.getHomeMatches(teamId);
+    const away = this.getAwayMatches(teamId);
+    const totalVictories = home
+      .reduce((
         acc: number,
         curr: any,
-      ) => ((curr.awayTeamGoals > curr.homeTeamGoals) ? acc + 1 : acc), 0);
+      ) => ((curr.homeTeamGoals > curr.awayTeamGoals) ? acc + 1 : acc), 0)
+      + away
+        .reduce((
+          acc: number,
+          curr: any,
+        ) => ((curr.awayTeamGoals > curr.homeTeamGoals) ? acc + 1 : acc), 0);
     return totalVictories;
   }
 
-  private static async countLoses(matchesH: LeaderBoard[], matchesA: LeaderBoard[]) {
-    const totalLoses = matchesH.reduce((
-      acc: number,
-      curr: any,
-    ) => ((curr.awayTeamGoals > curr.homeTeamGoals) ? acc + 1 : acc), 0)
-      + matchesA.reduce((
+  private countLoses(teamId: number) {
+    const home = this.getHomeMatches(teamId);
+    const away = this.getAwayMatches(teamId);
+    const totalLoses = home
+      .reduce((
         acc: number,
         curr: any,
-      ) => ((curr.homeTeamGoals > curr.awayTeamGoals) ? acc + 1 : acc), 0);
+      ) => ((curr.awayTeamGoals > curr.homeTeamGoals) ? acc + 1 : acc), 0)
+      + away
+        .reduce((
+          acc: number,
+          curr: any,
+        ) => ((curr.homeTeamGoals > curr.awayTeamGoals) ? acc + 1 : acc), 0);
     return totalLoses;
   }
 
-  private static async countDraws(matchesH: LeaderBoard[], matchesA: LeaderBoard[]) {
-    const totalDraws = matchesH.reduce((
-      acc: number,
-      curr: any,
-    ) => ((curr.homeTeamGoals === curr.awayTeamGoals) ? acc + 1 : acc), 0)
-      + matchesA.reduce((
+  private countDraws(teamId: number) {
+    const home = this.getHomeMatches(teamId);
+    const away = this.getAwayMatches(teamId);
+    const totalDraws = home
+      .reduce((
         acc: number,
         curr: any,
-      ) => ((curr.awayTeamGoals === curr.homeTeamGoals) ? acc + 1 : acc), 0);
+      ) => ((curr.homeTeamGoals === curr.awayTeamGoals) ? acc + 1 : acc), 0)
+      + away
+        .reduce((
+          acc: number,
+          curr: any,
+        ) => ((curr.awayTeamGoals === curr.homeTeamGoals) ? acc + 1 : acc), 0);
     return totalDraws;
   }
 
-  private static async getEfficiency(matchesH: LeaderBoard[], matchesA: LeaderBoard[]) {
-    const totalPoints = await this.countGamePoints(matchesH, matchesA);
-    const totalGames = await this.countTotalGames(matchesA, matchesH);
+  private getEfficiency(teamId: number) {
+    const totalPoints = this.countGamePoints(teamId);
+    const totalGames = this.countTotalGames(teamId);
     const efficiency = (totalPoints / (totalGames * 3)) * 100;
     return Number(efficiency.toFixed(2));
   }
 
-  private static async sortTeams(teams: any) {
-    const teamsSorted = await teams
+  private static sortTeams(teams: any) {
+    const teamsSorted = teams
       .filter((v: any, i: any, a: any) => a.findIndex((v2: any) => (v2.name === v.name)) === i);
     return teamsSorted.sort((a: any, b: any) =>
       b.totalPoints - a.totalPoints
@@ -125,24 +142,22 @@ class LeaderBoardService {
   }
 
   async getAll() {
-    const matches = await this.getAllMatches();
-    const leaderboardsHome = await Promise.all(matches.map(async (team: any) => {
-      const homeMatches = await this.getHomeMatches(team.homeTeam);
-      const awayMatches = await this.getAwayMatches(team.homeTeam);
-      return {
-        name: team.teamHome.teamName,
-        totalPoints: await LeaderBoardService.countGamePoints(homeMatches, awayMatches),
-        totalGames: await LeaderBoardService.countTotalGames(homeMatches, awayMatches),
-        totalVictories: await LeaderBoardService.countVictories(homeMatches, awayMatches),
-        totalLosses: await LeaderBoardService.countLoses(homeMatches, awayMatches),
-        totalDraws: await LeaderBoardService.countDraws(homeMatches, awayMatches),
-        goalsFavor: await LeaderBoardService.countTotalGoalsFavor(homeMatches, awayMatches),
-        goalsOwn: await LeaderBoardService.countTotalGoalsOwn(homeMatches, awayMatches),
-        goalsBalance: await LeaderBoardService.countTotalGoalsBalance(homeMatches, awayMatches),
-        efficiency: await LeaderBoardService.getEfficiency(homeMatches, awayMatches),
-      };
+    this.allMatches = await this.getAllMatches();
+    const leaderboardsHome = this.allMatches.map((team: any) => ({
+      name: team.teamHome.teamName,
+      totalPoints: this.countGamePoints(team.homeTeam),
+      totalGames: this.countTotalGames(team.homeTeam),
+      totalVictories: this.countVictories(team.homeTeam),
+      totalLosses: this.countLoses(team.homeTeam),
+      totalDraws: this.countDraws(team.homeTeam),
+      goalsFavor: this.countTotalGoalsFavor(team.homeTeam),
+      goalsOwn: this.countTotalGoalsOwn(team.homeTeam),
+      goalsBalance: this.countTotalGoalsBalance(team.homeTeam),
+      efficiency: this.getEfficiency(team.homeTeam),
     }));
-    return LeaderBoardService.sortTeams(leaderboardsHome);
+    const teamsSorted = LeaderBoardService.sortTeams(leaderboardsHome);
+
+    return teamsSorted;
   }
 }
 export default LeaderBoardService;
