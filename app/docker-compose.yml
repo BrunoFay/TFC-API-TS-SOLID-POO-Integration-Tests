@@ -1,22 +1,5 @@
 version: '3.9'
 services:
-  frontend:
-    build: ./frontend
-    # ...
-    container_name: app_frontend
-    ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/app
-    depends_on:
-      backend:
-        condition: service_healthy
-    # Os `healthcheck` devem garantir que a aplicação
-    # está operacional, antes de liberar o container
-    healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3000"]  # Caso utilize outra porta interna para o front, altere ela aqui também
-      timeout: 10s
-      retries: 5
   backend:
     build: ./backend
     platform: linux/x86_64
