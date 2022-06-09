@@ -1,0 +1,1 @@
+export const matchesKeys=['id', 'homeTeam', 'homeTeamGoals', 'awayTeam', 'awayTeamGoals', 'inProgress','teamHome','teamAway']

@@ -1,0 +1,1 @@
+export const leaderboardsKeys=['name','totalPoints','totalGames','totalVictories','totalDraws','totalLosses','goalsFavor','goalsOwn','goalsBalance','efficiency']
