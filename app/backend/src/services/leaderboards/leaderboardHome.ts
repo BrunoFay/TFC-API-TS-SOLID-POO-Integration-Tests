@@ -1,6 +1,6 @@
 import { LeaderBoardModel } from '../../types/leaderBoard';
 import TeamsM from '../../database/models/Teams';
-import LeaderboardsHelpers from './helpers';
+import LeaderboardsHelpers from '../../helpers/LeaderboardHelpers';
 /* referencia para remover duplicados https://stackoverflow.com/questions/2218999/how-to-remove-all-duplicates-from-an-array-of-objects
 referencia sort compare https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-valu
 */

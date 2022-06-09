@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import { validadeToken } from '../services/token';
-import { getUsers } from '../services/middlewareHelpers';
+import { validadeToken } from '../helpers/token';
+import { getUsers } from '../helpers/middlewareHelpers';
 
 export default class TokenValidates {
   tokenValidate: RequestHandler = async (req, res, next) => {

@@ -1,19 +1,16 @@
 import * as express from 'express';
 import * as cors from 'cors';
-import loginRouter from './routes/login';
-import teamsRouter from './routes/teams';
-import matchesRouter from './routes/matches';
-import leaderBoardRouter from './routes/leaderboard';
+import routes from './routes';
 import gerenicError from './middlewares/HandleGenericError';
 
 class App {
   public app: express.Express;
-  // ...
+
 
   constructor() {
     this.app = express();
     this.config();
-    // ...
+ 
   }
 
   private config(): void {
@@ -27,12 +24,9 @@ class App {
     this.app.use(accessControl);
     this.app.use(cors());
     this.app.use(express.json());
-    this.app.use(loginRouter);
-    this.app.use(teamsRouter);
-    this.app.use(matchesRouter);
-    this.app.use(leaderBoardRouter);
+    this.app.use(routes);
     this.app.use(gerenicError);
-    // ..
+  
   }
 
   public start(PORT: string | number): void {
@@ -42,5 +36,4 @@ class App {
 
 export { App };
 
-// A execução dos testes de cobertura depende dessa exportação
 export const { app } = new App();

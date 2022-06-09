@@ -1,9 +1,11 @@
 import { Match } from '../../types/matches';
 import Teams from '../../database/models/Teams';
 import { LeaderBoardModel } from '../../types/leaderBoard';
+import LeaderboardsHelpers from '../../helpers/LeaderboardHelpers';
 
 class LeaderBoardService {
   private matchModel: LeaderBoardModel;
+  private helpers= new LeaderboardsHelpers()
   private allMatches: Match[];
 
   constructor(matchModel: LeaderBoardModel) {
@@ -61,12 +63,7 @@ class LeaderBoardService {
     return totalGoalsFavor;
   }
 
-  private countTotalGoalsBalance(teamId: number) {
-    const homeGoals = this.countTotalGoalsFavor(teamId);
-    const awayGoals = this.countTotalGoalsOwn(teamId);
-    const balanceGoals = homeGoals - awayGoals;
-    return balanceGoals;
-  }
+
 
   private countVictories(teamId: number) {
     const home = this.getHomeMatches(teamId);
@@ -116,22 +113,6 @@ class LeaderBoardService {
     return totalDraws;
   }
 
-  private getEfficiency(teamId: number) {
-    const totalPoints = this.countGamePoints(teamId);
-    const totalGames = this.countTotalGames(teamId);
-    const efficiency = (totalPoints / (totalGames * 3)) * 100;
-    return Number(efficiency.toFixed(2));
-  }
-
-  private static sortTeams(teams: any) {
-    const teamsSorted = teams
-      .filter((v: any, i: any, a: any) => a.findIndex((v2: any) => (v2.name === v.name)) === i);
-    return teamsSorted.sort((a: any, b: any) =>
-      b.totalPoints - a.totalPoints
-      || b.goalsBalance - a.goalsBalance
-      || b.goalsFavor - a.goalsFavor
-      || a.goalsOwn - b.goalsOwn);
-  }
 
   async getAllMatches() {
     const allMatches = await this.matchModel.findAll({
@@ -152,10 +133,10 @@ class LeaderBoardService {
       totalDraws: this.countDraws(team.homeTeam),
       goalsFavor: this.countTotalGoalsFavor(team.homeTeam),
       goalsOwn: this.countTotalGoalsOwn(team.homeTeam),
-      goalsBalance: this.countTotalGoalsBalance(team.homeTeam),
-      efficiency: this.getEfficiency(team.homeTeam),
+      goalsBalance: LeaderboardsHelpers.countTotalGoalsBalance(team.homeTeam),
+      efficiency: LeaderboardsHelpers.getEfficiency(team.homeTeam),
     }));
-    const teamsSorted = LeaderBoardService.sortTeams(leaderboardsHome);
+    const teamsSorted = LeaderboardsHelpers.sortTeams(leaderboardsHome);
 
     return teamsSorted;
   }

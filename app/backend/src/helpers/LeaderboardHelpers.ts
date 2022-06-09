@@ -1,4 +1,4 @@
-import { Match } from '../../types/matches';
+import { Match } from '../types/matches';
 
 export default class LeaderboardsHelpers {
   static countTotalGames(matches: Match[]) {

@@ -1,6 +1,6 @@
 import { LeaderBoardModel } from '../../types/leaderBoard';
 import TeamsM from '../../database/models/Teams';
-import LeaderboardsHelpers from './helpers';
+import LeaderboardsHelpers from '../../helpers/LeaderboardHelpers';
 import { Match } from '../../types/matches';
 
 class LeaderBoardAwayService {

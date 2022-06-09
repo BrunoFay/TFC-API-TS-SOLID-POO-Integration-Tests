@@ -2,7 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import { JwtPayload } from 'jsonwebtoken';
 import { User } from '../types/user';
 import { LoginInfos, LoginModel } from '../types/login';
-import { createToken, validadeToken } from './token';
+import { createToken, validadeToken } from '../helpers/token';
 
 class LoginService {
   loginModel: LoginModel;

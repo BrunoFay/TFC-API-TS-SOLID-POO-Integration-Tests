@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { getTeam } from '../services/middlewareHelpers';
+import { getTeam } from '../helpers/middlewareHelpers';
 
 class MatchesValidates {
   validateIfTeamsAreDifferents: RequestHandler = (req, res, next) => {
