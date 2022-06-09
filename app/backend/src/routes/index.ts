@@ -6,9 +6,9 @@ import teamsRoutes from './teams';
 
 const routes = Router();
 
-routes.use('/login', loginRoutes);
-routes.use('/teams', teamsRoutes);
-routes.use('/matches', matchesRoutes);
-routes.use('/leaderboard', leaderboardRoutes);
+routes.use(loginRoutes);
+routes.use(teamsRoutes);
+routes.use(matchesRoutes);
+routes.use(leaderboardRoutes);
 
 export default routes;
